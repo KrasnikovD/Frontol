@@ -22,9 +22,8 @@ frontol.addEventListener("cancelDocument", "ClearUserValues", false);
 frontol.addEventListener("openDocument", "ClearUserValues", true);
 
 frontol.userValues.clear();
-//frontol.actions.showMessage(frontol.shopNumber);
 
-SRV_LINK = "192.168.0.60:60606";
+SRV_LINK = "XXX.XXX.XXX.XXX:60606";
 CARD_FOUND = false;
 SET_TIME_WAIT = "5";
 ERROR_CONNECT = true;
@@ -35,11 +34,6 @@ ERROR_CONNECT = true;
 function ClearUserValues(){
 frontol.userValues.clear();
 CARD_FOUND = false;
-//if (frontol.currentDocument.cardValues != ''){
-//GuestId.text = '';
-//}
-//GuestId.text = '';
-//("CARD_FOUND " + CARD_FOUND);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -86,16 +80,9 @@ for (
            //frontol.actions.showMessage("Стоимость товара по акции:" + SummPromo);
            }
         }
-//frontol.actions.showMessage("FD.sum "+FD.sum);
-//frontol.actions.showMessage("FD.totalSum "+FD.totalSum);
-//frontol.actions.showMessage("FD.sumDiscoun "+FD.totalSumDiscount);
 
-//frontol.actions.showMessage("SummPromo "+SummPromo);
-//frontol.actions.showMessage("BonusCode.text "+BonusCode.text);
 summPotratsAdd = Math.ceil(SummChek - (SummPromo+SummPositionDiscountOff));
-//frontol.actions.showMessage("summPotratsAdd "+summPotratsAdd);
 summBonusAdd = Math.ceil((summPotratsAdd/100*BonusCode.text));
-//frontol.actions.showMessage("summBonusAdd "+summBonusAdd);
 
  if (frontol.currentDocument.totalSum != 0){
     WShell = new ActiveXObject("WScript.Shell");
@@ -142,7 +129,6 @@ ERROR_CONNECT = true;
  GetCardByCode();
 
  if(!ERROR_CONNECT){
- //frontol.actions.cancel();
  WShell = new ActiveXObject("WScript.Shell");
  WShell.SendKeys("^{F12}");
 
@@ -150,10 +136,7 @@ ERROR_CONNECT = true;
 
  //frontol.actions.wait("Получение данных...", SET_TIME_WAIT);
 
- // frontol.actions.showMessage("GuestId 111 " + GuestId);
-
  if(ERROR_CONNECT = true && GuestId != null){
-   //frontol.actions.showMessage("2 " + CARD_FOUND);
    SetMinPrice();
 
  } else {
@@ -171,7 +154,6 @@ function  PostPaymend(){
 //Дата документа
 DocDate = frontol.currentDocument.dateClose;
 FD = frontol.currentDocument;
-//frontol.actions.showMessage("GuestId.text.length: "+ GuestId.text.length);
 //Если карта введена
 if (FD.cardValues != ''){
 frontol.actions.showMessage("summPotratsAdd: " + summPotratsAdd);
@@ -214,11 +196,8 @@ xhttp.onreadystatechange = function() {
     }
 
 };
-    //frontol.actions.showMessage("!!! "+frontol.currentDocument.cardValues);
     xhttp.send();
     ClearUserValues(); //Очистка данных клиента
-//  GuestId.text = '';
-//  frontol.actions.showMessage("Списано: "+BonusPay+" Бонусов");
 
 } else {
 ///////////////////////////////////////////////////////////
@@ -264,11 +243,7 @@ xhttp.onreadystatechange = function() {
 //Cумма потрат (сколько человек заплатил своих денег)
 //Эту сумму передать положительным значением с типом транзакции 3
 ///////////////////////////////////////////////////////////////////////
-
-    //frontol.actions.wait("Отправка данных...", SET_TIME_WAIT);
-    //frontol.actions.showMessage("Начислено потрат: "+ summPotratsAdd);
-//end if
- };
+};
 
 
 ///////////////////////////////////////////
@@ -360,10 +335,7 @@ else{
        else if(frontol.actions.showMessage("Баланс карты: " + BonusValue + ".\n"+"Возможно списать: "+ MaxBonusValue,Button.YesNo + Icon.Question) == DialogResult.Yes){
 
              summPotratsAdd = 0;
-             //frontol.actions.showMessage("summPotratsAdd: "+summPotratsAdd);
-             //frontol.actions.showMessage("Спишется 2: "+MaxBonusValue);
              return BonusPay = MaxBonusValue;
-             //FD.addPayment(3,BonusValue,2);
 
        }
 }
@@ -380,8 +352,6 @@ FD = frontol.currentDocument;
     var xhttp = new ActiveXObject("Microsoft.XMLHTTP");
 
     xhttp.onreadystatechange = function() {
-       //frontol.actions.showMessage(xhttp.readyState);
-       //frontol.actions.showMessage(xhttp.status);
 
     if (xhttp.readyState == 4 && xhttp.status == 200){
         //frontol.actions.showMessage("responseText" + xhttp.responseText);
@@ -400,24 +370,15 @@ FD = frontol.currentDocument;
             BonusCode    = xmlDoc.selectSingleNode("//AG4Response//HolderInfo//BonusCode");
             BonusBalance = xmlDoc.selectSingleNode("//AG4Response//HolderInfo//S2");
 
-        //frontol.actions.showMessage("GuestId "+GuestId.text);
-        //frontol.actions.showMessage("HolderName "+HolderName.text);
-        //frontol.actions.showMessage("BonusBalance "+BonusBalance.text);
-        //frontol.actions.showMessage("BonusCode "+BonusCode.text);
-        //frontol.actions.showMessage("FD.hallPlaceCode "+FD.hallPlaceCode);
-
         frontol.userValues.clear();
         frontol.userValues.set("bonusAG",BonusBalance.text);  //присваиваем пользовательскую переменную bonusAG
-        //frontol.actions.showMessage("Добавленна карта " + frontol.currentDocument.cardValues);
         }
         var xdoc = parseWitoutActiveX(xhttp.responseText);
-        //frontol.actions.showMessage(xdoc.xml);
     }
 
 };
-    //frontol.actions.showMessage(frontol.currentDocument.cardValues);
+
     xhttp.open("GET", "http://"+SRV_LINK+"/cgi-bin/agxmlapi"+frontol.shopNumber+"/agxmlapi.exe/HolderByCode?code="+frontol.currentDocument.cardValues+"&shop=1&pos=2&x="+Math.random(), false);
- // xhttp.open("GET", "http://tmt.d2a.ru:60900/cgi-bin/agxmlapi/agxmlapi.exe/HolderByCode?code=72332891&shop=1&pos=2", true);
 
  try {
     xhttp.send();
