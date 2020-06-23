@@ -370,8 +370,10 @@ FD = frontol.currentDocument;
             BonusCode    = xmlDoc.selectSingleNode("//AG4Response//HolderInfo//BonusCode");
             BonusBalance = xmlDoc.selectSingleNode("//AG4Response//HolderInfo//S2");
 
-        frontol.userValues.clear();
-        frontol.userValues.set("bonusAG",BonusBalance.text);  //присваиваем пользовательскую переменную bonusAG
+            frontol.userValues.clear();
+            frontol.userValues.set("bonusHOLDERNAME",HolderName.text.replace(/(.+) (.).+ (.).+/, '$1 $2. $3.'));    //присваиваем пользовательскую переменную bonusAG(Баланс бонусов)
+            frontol.userValues.set("bonusAG",BonusBalance.text);    //присваиваем пользовательскую переменную bonusAG(Баланс бонусов)
+            frontol.userValues.set("bonusCODE",BonusCode.text+"%");  //присваиваем пользовательскую переменную bonusCODE(Процент начисления бонусов)
         }
         var xdoc = parseWitoutActiveX(xhttp.responseText);
     }
